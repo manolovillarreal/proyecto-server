@@ -10,9 +10,10 @@ let rooms = [];
 let roomsPerClients = {};
 
 io.on("connection", (client) => {
-  let clientType = client.handshake.query.clientType;
+  // let clientType = client.handshake.query.clientType;
+  // console.log("Nueva Conexión de tipo :" + clientType);
 
-  console.log("Nueva Conexión de tipo :" + clientType);
+  console.log("Nueva Conexión");
 
   client.emit("onConnection", {
     message: "Bienvenido al servidor",
@@ -28,19 +29,26 @@ io.on("connection", (client) => {
 
     rooms.push(room);
     client.join(room);
+    roomsPerClients[client.id] = room;
 
     console.log("Room created: " + room);
-
     client.emit("roomCreated", { room });
   });
 
+  client.on("gameReady", () => {
+    let room = roomsPerClients[client.id];
+    console.log("Game " + room + " Ready");
+    client.to(room).emit("gameReady", { state: true });
+  });
+
+  //
   client.on("joinRoom", (data) => {
     let room = data.room;
+    console.log("Trying to join room " + room);
     if (!rooms.includes(room)) {
       client.emit("joinedToRoom", { state: false });
       return;
     }
-
     roomsPerClients[client.id] = room;
     client.join(room);
     console.log("Player Enter Room " + room);
@@ -60,14 +68,14 @@ io.on("connection", (client) => {
   });
   client.on("playerInput", (data) => {
     let room = roomsPerClients[client.id];
-    console.log("player Input: " + data.command + " To " + room);
-    client
-      .to(room)
-      .emit("playerInput", { playerId: client.id, command: data.command });
+    data.playerId = client.id;
+    client.to(room).emit("playerInput", data);
   });
 });
 
 let input = {
   playerId: "",
   command: "up",
+  axisHorizontal: 0,
+  axisVertical: 1,
 };

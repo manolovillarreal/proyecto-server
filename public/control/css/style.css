@@ -1,0 +1,19 @@
+body {
+  font: 13px Helvetica, Arial;
+  background-color: #212121;
+  color: white;
+  text-align: center;
+}
+button {
+  width: 200px;
+  height: 50px;
+  font-size: 25px;
+  font-weight: bold;
+  background-color: lightslategray;
+  color: white;
+  border-radius: 6px;
+}
+
+#btnUp {
+  display: inline;
+}

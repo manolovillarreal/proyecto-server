@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <h1>CONTROL</h1>
+    <input id="txtRoomCode" placeholder="Enter Roon Code" />
+    <button id="btnJoinRoom">Connect</button>
+    <button id="btnReady">Ready</button>
+    <div id="divControl">
+      <button id="btnUp">UP</button>
+      <button id="btnDown">DOWN</button>
+      <div id="accelerometer">Waiting for accelerometer...</div>
+    </div>
+    <script src="./js/sockets.client.js"></script>
+    <script src="./js/input.js"></script>
+  </body>
+</html>
